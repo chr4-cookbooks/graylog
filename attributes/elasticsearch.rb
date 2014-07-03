@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: graylog
-# Recipe:: default
+# Attributes:: elasticsearch
 #
 # Copyright (C) 2014 Chris Aumann
 #
@@ -18,4 +18,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-include_recipe 'graylog::elasticsearch'
+# Elasticsearch version to use. Currently 0.90.x and 1.0.x versions are available
+# See: http://www.elasticsearch.org/blog/apt-and-yum-repositories/
+default['graylog']['elasticsearch']['version'] = '1.0'

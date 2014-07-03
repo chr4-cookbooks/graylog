@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: graylog
-# Recipe:: default
+# Recipe:: elasticsearch
 #
 # Copyright (C) 2014 Chris Aumann
 #
@@ -18,4 +18,18 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-include_recipe 'graylog::elasticsearch'
+# Setup official elasticsearch PPA
+apt_repository 'elasticsearch' do
+  uri "http://packages.elasticsearch.org/elasticsearch/#{node['graylog']['elasticsearch']['version']}/debian"
+  distribution 'stable'
+  components %w(main)
+  key 'http://packages.elasticsearch.org/GPG-KEY-elasticsearch'
+end
+
+package 'openjdk-7-jre'
+package 'elasticsearch'
+
+service 'elasticsearch' do
+  supports restart: true
+  action [:enable, :start]
+end

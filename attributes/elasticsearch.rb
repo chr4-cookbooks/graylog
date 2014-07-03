@@ -24,3 +24,4 @@ default['graylog']['elasticsearch']['version'] = '1.0'
 
 # Assign half of the systems memory to elasticsearch heap
 default['graylog']['elasticsearch']['heap_size'] = "#{(node['memory']['total'].to_i / 1024 / 2).to_i}m"
+default['graylog']['elasticsearch']['cluster_name'] = 'graylog2'

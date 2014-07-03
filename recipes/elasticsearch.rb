@@ -29,6 +29,12 @@ end
 package 'openjdk-7-jre'
 package 'elasticsearch'
 
+template '/etc/elasticsearch/elasticsearch.yml' do
+  mode      00644
+  source    'elasticsearch.yml.erb'
+  variables cluster_name: node['graylog']['elasticsearch']['cluster_name']
+end
+
 template '/etc/default/elasticsearch' do
   mode      00644
   source    'elasticsearch.default.erb'
@@ -39,5 +45,6 @@ service 'elasticsearch' do
   supports restart: true
   action [:enable, :start]
 
+  subscribes :restart, 'template[/etc/elasticsearch/elasticsearch.yml]'
   subscribes :restart, 'template[/etc/default/elasticsearch]'
 end

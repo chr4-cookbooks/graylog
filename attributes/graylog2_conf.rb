@@ -75,7 +75,7 @@ default['graylog']['server']['graylog2.conf']['allow_highlighting'] = false
 # settings to be passed to elasticsearch's client (overriding those in the provided elasticsearch_config_file)
 # all these
 # this must be the same as for your elasticsearch cluster
-default['graylog']['server']['graylog2.conf']['elasticsearch_cluster_name'] = 'graylog2'
+default['graylog']['server']['graylog2.conf']['elasticsearch_cluster_name'] = node['graylog']['elasticsearch']['cluster_name']
 
 # you could also leave this out, but makes it easier to identify the graylog2 client instance
 default['graylog']['server']['graylog2.conf']['elasticsearch_node_name'] = nil

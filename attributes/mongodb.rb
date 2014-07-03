@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: graylog
-# Recipe:: default
+# Attributes:: mongodb
 #
 # Copyright (C) 2014 Chris Aumann
 #
@@ -18,5 +18,5 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-include_recipe 'graylog::elasticsearch'
-include_recipe 'mongodb::default'
+# We do not need a big mongodb instance, only credentials are stored
+default['mongodb']['config']['smallfiles'] = true

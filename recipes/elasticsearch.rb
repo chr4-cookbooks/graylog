@@ -31,13 +31,13 @@ package 'elasticsearch'
 
 template '/etc/elasticsearch/elasticsearch.yml' do
   mode      00644
-  source    'elasticsearch.yml.erb'
+  source    'elasticsearch/elasticsearch.yml.erb'
   variables cluster_name: node['graylog']['elasticsearch']['cluster_name']
 end
 
 template '/etc/default/elasticsearch' do
   mode      00644
-  source    'elasticsearch.default.erb'
+  source    'elasticsearch/default.erb'
   variables heap_size: node['graylog']['elasticsearch']['heap_size']
 end
 

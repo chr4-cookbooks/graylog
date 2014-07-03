@@ -29,7 +29,15 @@ end
 package 'openjdk-7-jre'
 package 'elasticsearch'
 
+template '/etc/default/elasticsearch' do
+  mode      00644
+  source    'elasticsearch.default.erb'
+  variables heap_size: node['graylog']['elasticsearch']['heap_size']
+end
+
 service 'elasticsearch' do
   supports restart: true
   action [:enable, :start]
+
+  subscribes :restart, 'template[/etc/default/elasticsearch]'
 end

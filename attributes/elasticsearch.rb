@@ -21,3 +21,6 @@
 # Elasticsearch version to use. Currently 0.90.x and 1.0.x versions are available
 # See: http://www.elasticsearch.org/blog/apt-and-yum-repositories/
 default['graylog']['elasticsearch']['version'] = '1.0'
+
+# Assign half of the systems memory to elasticsearch heap
+default['graylog']['elasticsearch']['heap_size'] = "#{(node['memory']['total'].to_i / 1024 / 2).to_i}m"

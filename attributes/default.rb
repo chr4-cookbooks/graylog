@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: graylog
-# Recipe:: default
+# Attributes:: default
 #
 # Copyright (C) 2014 Chris Aumann
 #
@@ -18,7 +18,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-include_recipe 'graylog::elasticsearch'
-include_recipe 'mongodb::default'
-include_recipe 'graylog::server'
-include_recipe 'graylog::web_interface'
+default['graylog']['web_interface']['version'] = '0.20.3'
+default['graylog']['web_interface']['user'] = 'graylog2'
+default['graylog']['web_interface']['url'] = "https://github.com/Graylog2/graylog2-web-interface/releases/download/#{node['graylog']['web_interface']['version']}/graylog2-web-interface-#{node['graylog']['web_interface']['version']}.tgz"
+
+default['graylog']['server']['version'] = '0.20.3'
+default['graylog']['server']['user'] = 'graylog2'
+default['graylog']['server']['url'] = "https://github.com/Graylog2/graylog2-server/releases/download/#{node['graylog']['server']['version']}/graylog2-server-#{node['graylog']['server']['version']}.tgz"

@@ -32,7 +32,9 @@ package 'elasticsearch'
 template '/etc/elasticsearch/elasticsearch.yml' do
   mode      00644
   source    'elasticsearch/elasticsearch.yml.erb'
-  variables cluster_name: node['graylog']['elasticsearch']['cluster_name']
+  variables cluster_name: node['graylog']['elasticsearch']['cluster_name'],
+            host: node['graylog']['elasticsearch']['host'],
+            port: node['graylog']['elasticsearch']['port']
 end
 
 template '/etc/default/elasticsearch' do

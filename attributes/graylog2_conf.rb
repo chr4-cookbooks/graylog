@@ -89,8 +89,10 @@ default['graylog']['server']['graylog2.conf']['elasticsearch_transport_tcp_port'
 # we don't need to run the embedded HTTP server here
 default['graylog']['server']['graylog2.conf']['elasticsearch_http_enabled'] = nil
 
-default['graylog']['server']['graylog2.conf']['elasticsearch_discovery_zen_ping_multicast_enabled'] = nil
-default['graylog']['server']['graylog2.conf']['elasticsearch_discovery_zen_ping_unicast_hosts'] = nil
+# Disable multicast, specify elasticsearch hosts to connect to (recommended for production)
+# See: http://support.torch.sh/help/kb/graylog2-server/configuring-and-tuning-elasticsearch-for-graylog2-v0200
+default['graylog']['server']['graylog2.conf']['elasticsearch_discovery_zen_ping_multicast_enabled'] = false
+default['graylog']['server']['graylog2.conf']['elasticsearch_discovery_zen_ping_unicast_hosts'] = "#{node['graylog']['elasticsearch']['host']}:#{node['graylog']['elasticsearch']['port']}"
 
 # the following settings allow to change the bind addresses for the elasticsearch client in graylog2
 # these settings are empty by default, letting elasticsearch choose automatically,

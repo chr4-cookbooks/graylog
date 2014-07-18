@@ -9,7 +9,7 @@ default['graylog']['web_interface']['graylog2-web-interface.conf']['graylog2-ser
 # The secret key is used to secure cryptographics functions. Set this to a long and randomly generated string.
 # If you deploy your application to several instances be sure to use the same key!
 # Generate for example with: pwgen -s 96
-default['graylog']['web_interface']['graylog2-web-interface.conf']['application.secret'] = 'CHANGE ME!'
+default['graylog']['web_interface']['graylog2-web-interface.conf']['application.secret'] = 'this-value-needs-to-be-at-least-16-chars-long'
 
 # Web interface timezone
 # Graylog2 stores all timestamps in UTC. To properly display times, set the default timezone of the interface.

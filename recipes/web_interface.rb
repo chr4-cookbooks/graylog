@@ -18,6 +18,16 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+# Check whether application secret is set
+unless node['graylog']['web_interface']['graylog2-web-interface.conf']['application.secret']
+  raise <<-EOS
+    Application secret is not set!
+    Please set the attribute `default['graylog']['web_interface']['graylog2-web-interface.conf']['application.secret']`
+    In your node configuration or wrapper cookbook! Use at least 64 characters.
+    Generate one by using for example: "pwgen -s 96".
+  EOS
+end
+
 # Create user
 user node['graylog']['web_interface']['user'] do
   system true

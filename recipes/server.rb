@@ -18,6 +18,29 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+# Check whether password secret and root password is set
+unless node['graylog']['server']['graylog2.conf']['password_secret']
+  raise <<-EOS
+    Password secret is not set!
+    Please set the attribute `default['graylog']['server']['graylog2.conf']['password_secret'] = 'CHANGE ME!'`
+    In your node configuration or wrapper cookbook! Use at least 64 characters.
+    Generate one by using for example: "pwgen -s 96".
+  EOS
+end
+
+unless node['graylog']['server']['graylog2.conf']['root_password_sha2']
+  raise <<-EOS
+    Admin password is not set!
+    Please set the attribute `default['graylog']['server']['graylog2.conf']['root_password_sha2'] = '...'`
+    In your node configuration or wrapper cookbook!
+    Generate it with "echo -n yourpassword | shasum -a 256".
+
+    For testing purposes only (!) you can use the following hash (password: "insecure")
+    "1d92dae504a70fbcae6d3721a55d7eacaf94d3133ea5f0394b7d203d64841110"
+  EOS
+end
+
+
 # Installation
 ark 'graylog2-server' do
   url     node['graylog']['server']['url']

@@ -8,19 +8,15 @@ default['graylog']['server']['graylog2.conf']['node_id_file'] = '/etc/graylog2-s
 
 # You MUST set a secret to secure/pepper the stored user passwords here. Use at least 64 characters.
 # Generate one by using for example: pwgen -s 96
-default['graylog']['server']['graylog2.conf']['password_secret'] = 'CHANGE ME!'
+default['graylog']['server']['graylog2.conf']['password_secret'] = nil
 
 # the default root user is named 'admin'
 # root_username = admin
 # You MUST specify a hash password for the root user (which you only need to initially set up the
 # system and in case you lose connectivity to your authentication backend)
-# This password cannot be changed using the API or via the web interface. If you need to change it,
-# modify it in this file.
-# Create one by using for example: echo -n yourpassword | shasum -a 256
-# and put the resulting hash value into the following line
-#
-# This cookbook defaults password to 'CHANGEME!'
-default['graylog']['server']['graylog2.conf']['root_password_sha2'] = '90aba6bd1562f5af8f912ac3fe00d9ed7387bd84ec32f3da7415f4078da5efb8'
+# This password cannot be changed using the API or via the web interface.
+# Create one by using for example: "echo -n yourpassword | shasum -a 256"
+default['graylog']['server']['graylog2.conf']['root_password_sha2'] = nil
 
 # Set plugin directory here (relative or absolute)
 default['graylog']['server']['graylog2.conf']['plugin_dir'] = 'plugin'

@@ -11,7 +11,10 @@ Including the following support services:
 
 To quickly setup a working Graylog2 installation on a single node, do the following:
 
-1. Setup application secrets (This is important!)
+1. Setup application secrets
+
+  This is required, as it would leave your Graylog2 installation insecure. Therefore the cookbook
+  will fail with an error message if you do not set them!
 
   ```ruby
   # Set this to a random string, generated e.g. with "pwgen 96"

@@ -11,11 +11,16 @@ Including the following support services:
 
 To quickly setup a working Graylog2 installation on a single node, do the following:
 
-1. Setup application secrets
+1. Setup application secrets (This is important!)
 
   ```ruby
+  # Set this to a random string, generated e.g. with "pwgen 96"
   node['graylog']['server']['graylog2.conf']['password_secret'] = 'CHANGE ME!'
-  node['graylog']['server']['graylog2.conf']['root_password_sha2'] = '...' # generate with "echo -n yourpassword | shasum -a 256"
+
+  # Generate with "echo -n yourpassword | shasum -a 256"
+  node['graylog']['server']['graylog2.conf']['root_password_sha2'] = '...'
+
+  # This also should be a random string, generated e.g. with "pwgen 96"
   node['graylog']['web_interface']['graylog2-web-interface.conf']['application.secret'] = 'CHANGE ME!'
   ```
 
@@ -49,9 +54,14 @@ Currently tested on Ubuntu-14.04 LTS.
 Attributes to adjust installation details (defaults should "just work")
 
 ```ruby
-node['graylog']['server']['version'] = '0.20.3'                         # Version to install
-node['graylog']['server']['user'] = 'graylog2'                          # User graylog2 uses (will be created)
-node['graylog']['server']['url'] = 'https://example.com/graylog.tar.gz' # URL to graylog2 tar.gz package (Github is the default)
+# Graylog2 version to install (check http://graylog2.org/download for current version)
+node['graylog']['server']['version'] = '0.20.3'
+
+# User graylog2 runs as (will be created)
+node['graylog']['server']['user'] = 'graylog2'
+
+# URL to graylog2 tar.gz package (Github is the default)
+node['graylog']['server']['url'] = 'https://example.com/graylog.tar.gz'
 ```
 
 Attributes to configure Graylog2.
@@ -95,9 +105,14 @@ node['graylog']['server']['graylog2.conf']['key'] = 'value'
 Attributes to adjust installation details (defaults should "just work")
 
 ```ruby
-node['graylog']['web_interface']['version'] = '0.20.3'                              # Version to install
-node['graylog']['web_interface']['user'] = 'graylog2'                               # User graylog2 uses (will be created)
-node['graylog']['web_interface']['url'] = 'https://example.com/webinterface.tar.gz' # URL to graylog2 tar.gz package (Github is the default)
+# Graylog2 web-interface version to install (check http://graylog2.org/download for current version)
+node['graylog']['web_interface']['version'] = '0.20.3'
+
+# User graylog2 runs as (will be created)
+node['graylog']['web_interface']['user'] = 'graylog2'
+
+# URL to graylog2 tar.gz package (Github is the default)
+node['graylog']['web_interface']['url'] = 'https://example.com/webinterface.tar.gz'
 ```
 
 Configure application secret. You NEED to change this, otherwise your installation will be insecure!

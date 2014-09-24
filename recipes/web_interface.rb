@@ -64,6 +64,6 @@ end
 
 service 'graylog2-web-interface' do
   supports   restart: true
-  action     [ :enable, :start ]
+  action     [:enable, :start]
   subscribes :restart, 'template[/usr/local/graylog2-web-interface/conf/graylog2-web-interface.conf]'
 end

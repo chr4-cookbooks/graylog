@@ -88,7 +88,7 @@ end
 
 service 'graylog2-server' do
   supports restart: true
-  action [ :enable, :start ]
+  action [:enable, :start]
 
   subscribes :restart, 'template[/etc/graylog2.conf]'
   subscribes :restart, 'template[/etc/init/graylog2-server.conf]'

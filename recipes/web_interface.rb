@@ -20,7 +20,7 @@
 
 # Check whether application secret is set
 unless node['graylog']['web_interface']['graylog2-web-interface.conf']['application.secret']
-  raise <<-EOS
+  fail <<-EOS
     Application secret is not set!
     Please set the attribute `default['graylog']['web_interface']['graylog2-web-interface.conf']['application.secret']`
     In your node configuration or wrapper cookbook! Use at least 64 characters.

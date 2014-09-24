@@ -20,7 +20,7 @@
 
 # Check whether password secret and root password is set
 unless node['graylog']['server']['graylog2.conf']['password_secret']
-  raise <<-EOS
+  fail <<-EOS
     Password secret is not set!
     Please set the attribute `default['graylog']['server']['graylog2.conf']['password_secret'] = 'CHANGE ME!'`
     In your node configuration or wrapper cookbook! Use at least 64 characters.
@@ -29,7 +29,7 @@ unless node['graylog']['server']['graylog2.conf']['password_secret']
 end
 
 unless node['graylog']['server']['graylog2.conf']['root_password_sha2']
-  raise <<-EOS
+  fail <<-EOS
     Admin password is not set!
     Please set the attribute `default['graylog']['server']['graylog2.conf']['root_password_sha2'] = '...'`
     In your node configuration or wrapper cookbook!

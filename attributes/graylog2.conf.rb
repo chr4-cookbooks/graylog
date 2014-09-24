@@ -44,7 +44,7 @@ default['graylog']['server']['graylog2.conf']['elasticsearch_config_file'] = nil
 
 # (Approximate) maximum number of documents in an Elasticsearch index before a new index
 # is being created, also see no_retention and elasticsearch_max_number_of_indices.
-default['graylog']['server']['graylog2.conf']['elasticsearch_max_docs_per_index'] = 20000000
+default['graylog']['server']['graylog2.conf']['elasticsearch_max_docs_per_index'] = 20_000_000
 
 # How many indices do you want to keep?
 # elasticsearch_max_number_of_indices*elasticsearch_max_docs_per_index=total number of messages in your setup
@@ -195,7 +195,7 @@ default['graylog']['server']['graylog2.conf']['mongodb_password'] = nil
 default['graylog']['server']['graylog2.conf']['mongodb_host'] = '127.0.0.1'
 default['graylog']['server']['graylog2.conf']['mongodb_replica_set'] = nil
 default['graylog']['server']['graylog2.conf']['mongodb_database'] = 'graylog2'
-default['graylog']['server']['graylog2.conf']['mongodb_port'] = 27017
+default['graylog']['server']['graylog2.conf']['mongodb_port'] = 27_017
 
 # Raise this according to the maximum connections your MongoDB server can handle if you encounter MongoDB connection problems.
 default['graylog']['server']['graylog2.conf']['mongodb_max_connections'] = 100

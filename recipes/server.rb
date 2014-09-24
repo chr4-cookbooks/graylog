@@ -40,7 +40,6 @@ unless node['graylog']['server']['graylog2.conf']['root_password_sha2']
   EOS
 end
 
-
 # Installation
 ark 'graylog2-server' do
   url     node['graylog']['server']['url']

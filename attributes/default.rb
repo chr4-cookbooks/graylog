@@ -24,4 +24,5 @@ default['graylog']['web_interface']['url'] = "http://packages.graylog2.org/relea
 
 default['graylog']['server']['version'] = '0.91.0'
 default['graylog']['server']['user'] = 'graylog2'
+default['graylog']['server']['group'] = 'graylog2'
 default['graylog']['server']['url'] = "http://packages.graylog2.org/releases/graylog2-server/graylog2-server-#{node['graylog']['server']['version']}.tgz"

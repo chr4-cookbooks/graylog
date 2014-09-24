@@ -233,7 +233,8 @@ default['graylog']['server']['graylog2.conf']['http_proxy_uri'] = nil
 default['graylog']['server']['graylog2.conf']['message_cache_off_heap'] = nil
 
 # Directory for the off-heap message cache data. (absolute or relative)
-default['graylog']['server']['graylog2.conf']['message_cache_spool_dir'] = nil
+# Default to /var/spool/graylog2, as /usr/local is not writeable
+default['graylog']['server']['graylog2.conf']['message_cache_spool_dir'] = '/var/spool/graylog2'
 
 # The commit interval for the message cache in milliseconds. Only affects message cache implementations that need to commit data.
 default['graylog']['server']['graylog2.conf']['message_cache_commit_interval'] = nil

@@ -55,6 +55,13 @@ user node['graylog']['server']['user'] do
   shell  '/bin/false'
 end
 
+# Create spool directory
+directory node['graylog']['server']['graylog2.conf']['message_cache_spool_dir'] do
+  mode 00755
+  owner node['graylog']['server']['user']
+  group node['graylog']['server']['group']
+end
+
 # Configuration
 template '/etc/graylog2.conf' do
   mode      00644

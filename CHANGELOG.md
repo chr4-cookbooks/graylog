@@ -1,5 +1,10 @@
 Changelog for Graylog cookbook
 
+0.91.1
+------
+
+- Update default Graylog2 version to `0.91.1`
+
 0.91.0
 ------
 

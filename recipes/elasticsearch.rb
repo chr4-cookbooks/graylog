@@ -29,7 +29,6 @@ end
 package 'openjdk-7-jre'
 package 'elasticsearch' do
   # Make sure elasticsearch is in the newest version.
-  # This is required because Graylog 0.91+ needs Elasticsearch 1.3
   action :upgrade
 end
 

@@ -14,14 +14,18 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.hostname = 'graylog-berkshelf'
 
   # Set the version of chef to install using the vagrant-omnibus plugin
-  config.omnibus.chef_version = :latest
+  # NOTE: You will need to install the vagrant-omnibus plugin:
+  #
+  #   $ vagrant plugin install vagrant-omnibus
+  #
+  if Vagrant.has_plugin?('omnibus')
+    config.omnibus.chef_version = 'latest'
+  end
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = 'opscode_ubuntu-12.04_provisionerless'
-
-  # The url from where the 'config.vm.box' box will be fetched if it
-  # doesn't already exist on the user's system.
-  config.vm.box_url = 'https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode_ubuntu-12.04_provisionerless.box'
+  # If this value is a shorthand to a box in Vagrant Cloud then
+  # config.vm.box_url doesn't need to be specified.
+  config.vm.box = 'chef/ubuntu-14.04'
 
   # Assign this VM to a host-only network IP, allowing you to access it
   # via the IP. Host-only networks can talk to the host machine as well as
@@ -59,7 +63,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Enabling the Berkshelf plugin. To enable this globally, add this configuration
   # option to your ~/.vagrant.d/Vagrantfile file
-  config.berkshelf.enabled = true
+  # config.berkshelf.enabled = true
 
   # An array of symbols representing groups of cookbook described in the Vagrantfile
   # to exclusively install and copy to Vagrant's shelf.

@@ -1,5 +1,16 @@
 Changelog for Graylog cookbook
 
+0.92.3
+------
+
+- Update default Graylog2 version to `0.92.3`
+
+0.92.0
+------
+
+- Update default Graylog2 version to `0.92.0`
+- Update Elasticsearch `1.4`
+
 0.91.3
 ------
 

@@ -40,18 +40,19 @@ unless node['graylog']['server']['graylog2.conf']['root_password_sha2']
   EOS
 end
 
-# Installation
-ark 'graylog2-server' do
-  url     node['graylog']['server']['url']
-  version node['graylog']['server']['version']
-  action  :install
-end
-
 # Create user
 user node['graylog']['server']['user'] do
   system true
   home   '/nonexistent'
   shell  '/bin/false'
+end
+
+# Installation
+ark 'graylog2-server' do
+  owner   node['graylog']['server']['user']
+  url     node['graylog']['server']['url']
+  version node['graylog']['server']['version']
+  action  :install
 end
 
 # Create spool directory

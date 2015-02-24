@@ -18,11 +18,11 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-default['graylog']['web_interface']['version'] = '0.92.3'
+default['graylog']['web_interface']['version'] = '1.0.0'
 default['graylog']['web_interface']['user'] = 'graylog2'
-default['graylog']['web_interface']['url'] = "http://packages.graylog2.org/releases/graylog2-web-interface/graylog2-web-interface-#{node['graylog']['web_interface']['version']}.tgz"
+default['graylog']['web_interface']['url'] = "https://packages.graylog2.org/releases/graylog2-web-interface/graylog-web-interface-#{node['graylog']['web_interface']['version']}.tgz"
 
-default['graylog']['server']['version'] = '0.92.3'
+default['graylog']['server']['version'] = '1.0.0'
 default['graylog']['server']['user'] = 'graylog2'
 default['graylog']['server']['group'] = 'graylog2'
-default['graylog']['server']['url'] = "http://packages.graylog2.org/releases/graylog2-server/graylog2-server-#{node['graylog']['server']['version']}.tgz"
+default['graylog']['server']['url'] = "https://packages.graylog2.org/releases/graylog2-server/graylog-#{node['graylog']['server']['version']}.tgz"

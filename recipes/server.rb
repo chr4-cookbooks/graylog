@@ -19,19 +19,19 @@
 #
 
 # Check whether password secret and root password is set
-unless node['graylog']['server']['graylog2.conf']['password_secret']
+unless node['graylog']['server']['graylog.conf']['password_secret']
   fail <<-EOS
     Password secret is not set!
-    Please set the attribute `default['graylog']['server']['graylog2.conf']['password_secret'] = 'CHANGE ME!'`
+    Please set the attribute `default['graylog']['server']['graylog.conf']['password_secret'] = 'CHANGE ME!'`
     In your node configuration or wrapper cookbook! Use at least 64 characters.
     Generate one by using for example: "pwgen -s 96".
   EOS
 end
 
-unless node['graylog']['server']['graylog2.conf']['root_password_sha2']
+unless node['graylog']['server']['graylog.conf']['root_password_sha2']
   fail <<-EOS
     Admin password is not set!
-    Please set the attribute `default['graylog']['server']['graylog2.conf']['root_password_sha2'] = '...'`
+    Please set the attribute `default['graylog']['server']['graylog.conf']['root_password_sha2'] = '...'`
     In your node configuration or wrapper cookbook!
     Generate it with "echo -n yourpassword | shasum -a 256".
 
@@ -54,22 +54,28 @@ user node['graylog']['server']['user'] do
   shell  '/bin/false'
 end
 
-# Create spool directory
-directory node['graylog']['server']['graylog2.conf']['message_cache_spool_dir'] do
+# Config directory
+directory '/etc/graylog/server' do
   mode 00755
+  recursive true
+end
+
+# Journal directory
+directory node['graylog']['server']['graylog.conf']['message_journal_dir'] do
   owner node['graylog']['server']['user']
-  group node['graylog']['server']['group']
+  mode 00755
+  recursive true
 end
 
 # Configuration
-template '/etc/graylog2.conf' do
+template '/etc/graylog/server/server.conf' do
   mode      00644
-  source    'graylog/graylog2.conf.erb'
-  variables config: node['graylog']['server']['graylog2.conf']
+  source    'graylog/graylog.conf.erb'
+  variables config: node['graylog']['server']['graylog.conf']
 end
 
 # Graylog writes a node-id to this file, needs access
-file '/etc/graylog2-server-node-id' do
+file node['graylog']['server']['graylog.conf']['node_id_file'] do
   owner node['graylog']['server']['user']
 end
 
@@ -79,7 +85,7 @@ template '/etc/init/graylog2-server.conf' do
   source    'upstart/graylog2-server.erb'
   variables dir:        '/usr/local/graylog2-server',
             user:       node['graylog']['server']['user'],
-            configfile: '/etc/graylog2.conf'
+            configfile: '/etc/graylog.conf'
 end
 
 link '/etc/init.d/graylog2-server' do
@@ -90,6 +96,6 @@ service 'graylog2-server' do
   supports restart: true
   action [:enable, :start]
 
-  subscribes :restart, 'template[/etc/graylog2.conf]'
+  subscribes :restart, 'template[/etc/graylog.conf]'
   subscribes :restart, 'template[/etc/init/graylog2-server.conf]'
 end

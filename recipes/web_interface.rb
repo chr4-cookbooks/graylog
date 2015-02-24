@@ -19,10 +19,10 @@
 #
 
 # Check whether application secret is set
-unless node['graylog']['web_interface']['graylog2-web-interface.conf']['application.secret']
+unless node['graylog']['web_interface']['graylog-web-interface.conf']['application.secret']
   fail <<-EOS
     Application secret is not set!
-    Please set the attribute `default['graylog']['web_interface']['graylog2-web-interface.conf']['application.secret']`
+    Please set the attribute `default['graylog']['web_interface']['graylog-web-interface.conf']['application.secret']`
     In your node configuration or wrapper cookbook! Use at least 64 characters.
     Generate one by using for example: "pwgen -s 96".
   EOS
@@ -44,18 +44,18 @@ ark 'graylog2-web-interface' do
 end
 
 # Configuration
-template '/usr/local/graylog2-web-interface/conf/graylog2-web-interface.conf' do
+template '/usr/local/graylog2-web-interface/conf/graylog-web-interface.conf' do
   mode      00644
-  source    'graylog/graylog2-web-interface.conf.erb'
-  variables config: node['graylog']['web_interface']['graylog2-web-interface.conf']
+  source    'graylog/graylog-web-interface.conf.erb'
+  variables config: node['graylog']['web_interface']['graylog-web-interface.conf']
 end
 
 # Service
 template '/etc/init/graylog2-web-interface.conf' do
   mode      00644
   source    'upstart/graylog2-web-interface.erb'
-  variables dir:        '/usr/local/graylog2-web-interface/bin',
-            user:       node['graylog']['web_interface']['user']
+  variables dir:  '/usr/local/graylog2-web-interface',
+            user: node['graylog']['web_interface']['user']
 end
 
 link '/etc/init.d/graylog2-web-interface' do
@@ -65,5 +65,5 @@ end
 service 'graylog2-web-interface' do
   supports   restart: true
   action     [:enable, :start]
-  subscribes :restart, 'template[/usr/local/graylog2-web-interface/conf/graylog2-web-interface.conf]'
+  subscribes :restart, 'template[/usr/local/graylog2-web-interface/graylog-web-interface.conf]'
 end

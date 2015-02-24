@@ -1,5 +1,19 @@
 Changelog for Graylog cookbook
 
+
+1.0.0
+-----
+
+- Update default Graylog versiont o `1.0.0`
+- Configuration option and config file changes according to version `1.0.0`
+
+  Attribute names for configruation files changed:
+    graylog2.conf -> graylog.conf
+    graylog2-web-interface.conf -> graylog-web-interface.conf
+
+  Node ID default URL changed (Migrate the file manually, if needed)
+    /etc/graylog2-server-node-id -> /etc/graylog/server/node-id
+
 0.92.3
 ------
 

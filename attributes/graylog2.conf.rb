@@ -11,7 +11,19 @@ default['graylog']['server']['graylog2.conf']['node_id_file'] = '/etc/graylog2-s
 default['graylog']['server']['graylog2.conf']['password_secret'] = nil
 
 # the default root user is named 'admin'
-# root_username = admin
+default['graylog']['server']['graylog2.conf']['root_username'] = 'admin'
+
+# The email address of the root user.
+# Default is empty
+default['graylog']['server']['graylog2.conf']['root_email'] = nil
+
+# The time zone setting of the root user.
+# Default is UTC
+default['graylog']['server']['graylog2.conf']['root_timezone'] = 'UTC'
+
+# Set plugin directory here (relative or absolute)
+default['graylog']['server']['graylog2.conf']['plugin_dir'] = 'plugin'
+
 # You MUST specify a hash password for the root user (which you only need to initially set up the
 # system and in case you lose connectivity to your authentication backend)
 # This password cannot be changed using the API or via the web interface.
@@ -38,13 +50,78 @@ default['graylog']['server']['graylog2.conf']['rest_enable_cors'] = nil
 # overall round trip times.
 default['graylog']['server']['graylog2.conf']['rest_enable_gzip'] = nil
 
+# Enable HTTPS support for the REST API. This secures the communication with the REST API with
+# TLS to prevent request forgery and eavesdropping. This is disabled by default. Uncomment the
+# next line to enable it.
+default['graylog']['server']['graylog2.conf']['rest_enable_tls'] = nil
+
+# The X.509 certificate file to use for securing the REST API.
+default['graylog']['server']['graylog2.conf']['rest_tls_cert_file'] = nil
+
+# The private key to use for securing the REST API.
+default['graylog']['server']['graylog2.conf']['rest_tls_key_file'] = nil
+
+# The password to unlock the private key used for securing the REST API.
+default['graylog']['server']['graylog2.conf']['rest_tls_key_password'] = nil
+
+# The maximum size of a single HTTP chunk in bytes.
+default['graylog']['server']['graylog2.conf']['rest_max_chunk_size'] = nil
+
+# The maximum size of the HTTP request headers in bytes.
+default['graylog']['server']['graylog2.conf']['rest_max_header_size'] = nil
+
+# The maximal length of the initial HTTP/1.1 line in bytes.
+default['graylog']['server']['graylog2.conf']['rest_max_initial_line_length'] = nil
+
+# The size of the execution handler thread pool used exclusively for serving the REST API.
+default['graylog']['server']['graylog2.conf']['rest_thread_pool_size'] = nil
+
+# The size of the worker thread pool used exclusively for serving the REST API.
+default['graylog']['server']['graylog2.conf']['rest_worker_threads_max_pool_size'] = nil
+
 # Embedded elasticsearch configuration file
 # pay attention to the working directory of the server, maybe use an absolute path here
 default['graylog']['server']['graylog2.conf']['elasticsearch_config_file'] = nil
 
+# Graylog will use multiple indices to store documents in. You can configured the strategy it uses
+# to determine
+# when to rotate the currently active write index.
+# It supports multiple rotation strategies:
+#   - "count" of messages per index, use elasticsearch_max_docs_per_index below to configure
+#   - "size" per index, use elasticsearch_max_size_per_index below to configure
+# valid values are "count", "size" and "time", default is "count"
+default['graylog']['server']['graylog2.conf']['rotation_strategy'] = 'count'
+
 # (Approximate) maximum number of documents in an Elasticsearch index before a new index
 # is being created, also see no_retention and elasticsearch_max_number_of_indices.
 default['graylog']['server']['graylog2.conf']['elasticsearch_max_docs_per_index'] = 20_000_000
+
+# (Approximate) maximum size in bytes per Elasticsearch index on disk before a new index is being
+# created, also see
+# no_retention and elasticsearch_max_number_of_indices. Default is 1GB.
+# Configure this if you used 'rotation_strategy = size' above.
+default['graylog']['server']['graylog2.conf']['elasticsearch_max_size_per_index'] = nil
+
+# (Approximate) maximum time before a new Elasticsearch index is being created, also see
+# no_retention and elasticsearch_max_number_of_indices. Default is 1 day.
+# Configure this if you used 'rotation_strategy = time' above.
+# Please note that this rotation period does not look at the time specified in the received
+# messages, but is
+# using the real clock value to decide when to rotate the index!
+# Specify the time using a duration and a suffix indicating which unit you want:
+#  1w  = 1 week
+#  1d  = 1 day
+#  12h = 12 hours
+# Permitted suffixes are: d for day, h for hour, m for minute, s for second.
+default['graylog']['server']['graylog2.conf']['elasticsearch_max_time_per_index'] = nil
+
+# Disable checking the version of Elasticsearch for being compatible with this Graylog release.
+# WARNING: Using Graylog with unsupported and untested versions of Elasticsearch may lead to data
+# loss!
+default['graylog']['server']['graylog2.conf']['elasticsearch_disable_version_check'] = nil
+
+# Disable message retention on this node, i. e. disable Elasticsearch index rotation.
+default['graylog']['server']['graylog2.conf']['no_retention'] = nil
 
 # How many indices do you want to keep?
 # elasticsearch_max_number_of_indices*elasticsearch_max_docs_per_index=total number of messages in your setup
@@ -151,7 +228,32 @@ default['graylog']['server']['graylog2.conf']['processor_wait_strategy'] = 'bloc
 # For optimum performance your LogMessage objects in the ring buffer should fit in your CPU L3 cache.
 # Start server with --statistics flag to see buffer utilization.
 # Must be a power of 2. (512, 1024, 2048, ...)
-default['graylog']['server']['graylog2.conf']['ring_size'] = 1024
+default['graylog']['server']['graylog2.conf']['ring_size'] = 65536
+default['graylog']['server']['graylog2.conf']['inputbuffer_ring_size'] = 65536
+default['graylog']['server']['graylog2.conf']['inputbuffer_processors'] = 2
+default['graylog']['server']['graylog2.conf']['inputbuffer_wait_strategy'] = 'blocking'
+
+# Enable the disk based message journal.
+default['graylog']['server']['graylog2.conf']['message_journal_enabled'] = true
+
+# The directory which will be used to store the message journal. The directory must me exclusively
+# used by Graylog and
+# must not contain any other files than the ones created by Graylog itself.
+default['graylog']['server']['graylog2.conf']['message_journal_dir'] = 'data/journal'
+
+# Journal hold messages before they could be written to Elasticsearch.
+# For a maximum of 12 hours or 5 GB whichever happens first.
+# During normal operation the journal will be smaller.
+default['graylog']['server']['graylog2.conf']['message_journal_max_age'] = nil
+default['graylog']['server']['graylog2.conf']['message_journal_max_size'] = nil
+
+default['graylog']['server']['graylog2.conf']['message_journal_flush_age'] = nil
+default['graylog']['server']['graylog2.conf']['message_journal_flush_interval'] = nil
+default['graylog']['server']['graylog2.conf']['message_journal_segment_age'] = nil
+default['graylog']['server']['graylog2.conf']['message_journal_segment_size'] = nil
+
+# Number of threads used exclusively for dispatching internal events. Default is 2.
+default['graylog']['server']['graylog2.conf']['async_eventbus_processors'] = nil
 
 # EXPERIMENTAL: Dead Letters
 # Every failed indexing attempt is logged by default and made visible in the web-interface. You can enable
@@ -166,14 +268,18 @@ default['graylog']['server']['graylog2.conf']['dead_letters_enabled'] = false
 default['graylog']['server']['graylog2.conf']['lb_recognition_period_seconds'] = 3
 
 # Every message is matched against the configured streams and it can happen that a stream contains rules which
-# take an unusual amount of time to run, for example if its using regular expressions that perform excessive backtracking.
+# take an unusual amount of time to run, for example if its using regular expressions that perform excessive backltracking.
 # This will impact the processing of the entire server. To keep such misbehaving stream rules from impacting other
 # streams, Graylog2 limits the execution time for each stream.
 # The default values are noted below, the timeout is in milliseconds.
 # If the stream matching for one stream took longer than the timeout value, and this happened more than "max_faults" times
 # that stream is disabled and a notification is shown in the web interface.
 default['graylog']['server']['graylog2.conf']['stream_processing_timeout'] = 2000
-default['graylog']['server']['graylog2.conf']['stream_processing_max_faults'] = nil
+default['graylog']['server']['graylog2.conf']['stream_processing_max_faults'] = 3
+
+# Length of the interval in seconds in which the alert conditions for all streams should be checked
+# and alarms are being sent.
+default['graylog']['server']['graylog2.conf']['alert_check_interval'] = nil
 
 # Since 0.21 the graylog2 server supports pluggable output modules. This means a single message can be written to multiple
 # outputs. The next setting defines the timeout for a single output module, including the default output module where all
@@ -228,42 +334,71 @@ default['graylog']['server']['graylog2.conf']['transport_email_web_interface_url
 # HTTP proxy for outgoing HTTP calls
 default['graylog']['server']['graylog2.conf']['http_proxy_uri'] = nil
 
-# Switch to enable/disable the off-heap message cache. Stores cached messages in the spool directory if set to true.
-# Stores the messages in an in-memory data structure if set to false.
-default['graylog']['server']['graylog2.conf']['message_cache_off_heap'] = nil
+# Disable the optimization of Elasticsearch indices after index cycling. This may take some load
+# from Elasticsearch
+# on heavily used systems with large indices, but it will decrease search performance. The default
+# is to optimize
+# cycled indices.
+default['graylog']['server']['graylog2.conf']['disable_index_optimization'] = nil
 
-# Directory for the off-heap message cache data. (absolute or relative)
-# Default to /var/spool/graylog2, as /usr/local is not writeable
-default['graylog']['server']['graylog2.conf']['message_cache_spool_dir'] = '/var/spool/graylog2'
+# Optimize the index down to <= index_optimization_max_num_segments. A higher number may take some
+# load from Elasticsearch
+# on heavily used systems with large indices, but it will decrease search performance. The default
+# is 1.
+default['graylog']['server']['graylog2.conf']['index_optimization_max_num_segments'] = 1
 
-# The commit interval for the message cache in milliseconds. Only affects message cache implementations that need to commit data.
-default['graylog']['server']['graylog2.conf']['message_cache_commit_interval'] = nil
+# Disable the index range calculation on all open/available indices and only calculate the range for
+# the latest
+# index. This may speed up index cycling on systems with large indices but it might lead to wrong
+# search results
+# in regard to the time range of the messages (i. e. messages within a certain range may not be
+# found). The default
+# is to calculate the time range on all open/available indices.
+default['graylog']['server']['graylog2.conf']['disable_index_range_calculation'] = nil
 
-# When more messages are coming in as we can process, incoming messages will be cached in memory until
-# they are ready to be processed. Per default this data structure is unbounded, so in situations of
-# constant high load, it will grow endlessly until all allocatable memory has been consumed and the
-# process dies.
-# To prevent this, the next setting allows you to define an upper bound for this memory cache, if the
-# number of messages in the cache has reached this limit, incoming messages will be dropped until it
-# has shrunk again.
-#
-# The default is 0, which means no upper bound.
-#
-default['graylog']['server']['graylog2.conf']['input_cache_max_size'] = nil
+# The threshold of the garbage collection runs. If GC runs take longer than this threshold, a system
+# notification
+# will be generated to warn the administrator about possible problems with the system. Default is 1
+# second.
+default['graylog']['server']['graylog2.conf']['gc_warning_threshold'] = '1s'
 
 # Connection timeout for a configured LDAP server (e. g. ActiveDirectory) in milliseconds.
 default['graylog']['server']['graylog2.conf']['ldap_connection_timeout'] = nil
 
-# Version checks settings. All timeouts are in milliseconds.
-default['graylog']['server']['graylog2.conf']['versionchecks'] = nil
-default['graylog']['server']['graylog2.conf']['versionchecks_uri'] = nil
-default['graylog']['server']['graylog2.conf']['versionchecks_connection_request_timeout'] = nil
-default['graylog']['server']['graylog2.conf']['versionchecks_connect_timeout'] = nil
-default['graylog']['server']['graylog2.conf']['versionchecks_socket_timeout'] = nil
-
 # https://github.com/bazhenov/groovy-shell-server
-default['graylog']['server']['graylog2.conf']['groovy_shell_enable'] = nil
-default['graylog']['server']['graylog2.conf']['groovy_shell_port'] = nil
+default['graylog']['server']['graylog2.conf']['groovy_shell_enable'] = false
+default['graylog']['server']['graylog2.conf']['groovy_shell_port'] = 6789
 
-# Enable collection of Graylog2-related metrics into MongoDB
-default['graylog']['server']['graylog2.conf']['enable_metrics_collection'] = nil
+# Enable collection of Graylog-related metrics into MongoDB
+default['graylog']['server']['graylog2.conf']['enable_metrics_collection'] = false
+
+# Disable the use of SIGAR for collecting system stats
+default['graylog']['server']['graylog2.conf']['disable_sigar'] = false
+
+# TELEMETRY
+# Enable publishing Telemetry data
+default['graylog']['server']['graylog2.conf']['telemetry_enabled'] = false
+
+# Base URL of the Telemetry service
+default['graylog']['server']['graylog2.conf']['telemetry_url'] = 'https://telemetry-in.graylog.com/submit/'
+
+# Authentication token for the Telemetry service
+default['graylog']['server']['graylog2.conf']['telemetry_token'] = nil
+
+# How often the Telemetry data should be reported
+default['graylog']['server']['graylog2.conf']['telemetry_report_interval'] = '1m'
+
+# Number of Telemetry data sets to store locally if the connection to the Telemetry service fails
+default['graylog']['server']['graylog2.conf']['telemetry_max_queue_size'] = 10
+
+# TTL for Telemetry data in local cache
+default['graylog']['server']['graylog2.conf']['telemetry_cache_timeout'] = '1m'
+
+# Connect timeout for HTTP connections
+default['graylog']['server']['graylog2.conf']['telemetry_service_connect_timeout'] =  '1s'
+
+# Write timeout for HTTP connections
+default['graylog']['server']['graylog2.conf']['telemetry_service_write_timeout'] = '5s'
+
+# Read timeout for HTTP connections
+default['graylog']['server']['graylog2.conf']['telemetry_service_read_timeout'] = '5s'

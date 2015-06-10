@@ -1,5 +1,10 @@
 Changelog for Graylog cookbook
 
+1.1.1
+-----
+
+- Update default Graylov ersion to `1.1.1`
+- Update default elasticsearch version to `1.5`
 
 1.0.0
 -----

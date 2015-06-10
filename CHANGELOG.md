@@ -9,7 +9,7 @@ Changelog for Graylog cookbook
 1.0.0
 -----
 
-- Update default Graylog versiont o `1.0.0`
+- Update default Graylog versiont to `1.0.0`
 - Configuration option and config file changes according to version `1.0.0`
 
   Attribute names for configruation files changed:

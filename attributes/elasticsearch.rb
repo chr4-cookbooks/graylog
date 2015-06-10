@@ -19,7 +19,7 @@
 #
 
 # Graylog v0.92.x supports Elasticsearch 1.4.x, so using 1.4 repository
-default['graylog']['elasticsearch']['version'] = '1.4'
+default['graylog']['elasticsearch']['version'] = '1.5'
 
 # Assign half of the systems memory to elasticsearch heap (recommended setting)
 # See: http://support.torch.sh/help/kb/graylog2-server/configuring-and-tuning-elasticsearch-for-graylog2-v0200

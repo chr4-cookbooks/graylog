@@ -1,5 +1,15 @@
 Changelog for Graylog cookbook
 
+1.2.0
+-----
+
+- Update default Graylog version to `1.2.0`
+- Use official repositories to install `graylog-server` and `graylog-web` packages
+- Rename `web_interface` recipe to `web`, to follow package naming
+- Rename `graylog.conf` attributes to `server.conf` to follow package naming
+- Rename `graylog-web-interface.conf` attribtues to `web.conf` to follow package naming
+- Add newly introduced options to attributes
+
 1.1.6
 -----
 

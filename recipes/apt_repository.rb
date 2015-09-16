@@ -1,8 +1,8 @@
 #
 # Cookbook Name:: graylog
-# Recipe:: default
+# Recipe:: apt_repository
 #
-# Copyright (C) 2014 Chris Aumann
+# Copyright (C) 2015 Chris Aumann
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,8 +18,11 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-include_recipe 'graylog::apt_repository'
-include_recipe 'graylog::elasticsearch'
-include_recipe 'mongodb::default'
-include_recipe 'graylog::server'
-include_recipe 'graylog::web_interface'
+package 'lsb-release'
+
+apt_repository 'graylog' do
+  uri 'https://packages.graylog2.org/repo/debian'
+  distribution node['lsb']['codename']
+  components Array(node['graylog']['version'])
+  key 'https://packages.graylog2.org/repo/debian/keyring.gpg'
+end

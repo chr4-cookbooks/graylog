@@ -3,33 +3,33 @@ Changelog for Graylog cookbook
 1.1.6
 -----
 
-- Update default Graylov ersion to `1.1.6`
+- Update default Graylog version to `1.1.6`
 
 1.1.5
 -----
 
-- Update default Graylov ersion to `1.1.5`
+- Update default Graylog version to `1.1.5`
 
 1.1.4
 -----
 
-- Update default Graylov ersion to `1.1.4`
+- Update default Graylog version to `1.1.4`
 
 1.1.3
 -----
 
-- Update default Graylov ersion to `1.1.3`
+- Update default Graylog version to `1.1.3`
 
 1.1.1
 -----
 
-- Update default Graylov ersion to `1.1.1`
+- Update default Graylog version to `1.1.1`
 - Update default elasticsearch version to `1.5`
 
 1.0.0
 -----
 
-- Update default Graylog versiont to `1.0.0`
+- Update default Graylog version to `1.0.0`
 - Configuration option and config file changes according to version `1.0.0`
 
   Attribute names for configruation files changed:

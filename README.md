@@ -1,6 +1,6 @@
 # graylog cookbook
 
-This cookbook sets up [Graylog2](http://graylog2.org), version `>= 0.20.x` (not the old rails graylog2).
+This cookbook sets up [Graylog](http://graylog.org), version `>= 0.20.x` (not the old rails graylog).
 
 Including the following support services:
 
@@ -9,22 +9,22 @@ Including the following support services:
 
 # Quickstart
 
-To quickly setup a working Graylog2 installation on a single node, do the following:
+To quickly setup a working Graylog installation on a single node, do the following:
 
 1. Setup application secrets
 
-  This is required, as it would leave your Graylog2 installation insecure. Therefore the cookbook
+  This is required, as it would leave your Graylog installation insecure. Therefore the cookbook
   will fail with an error message if you do not set them!
 
   ```ruby
   # Set this to a random string, generated e.g. with "pwgen 96"
-  node['graylog']['server']['graylog2.conf']['password_secret'] = 'CHANGE ME!'
+  node['graylog']['server']['server.conf']['password_secret'] = 'CHANGE ME!'
 
   # Generate with "echo -n yourpassword | shasum -a 256"
-  node['graylog']['server']['graylog2.conf']['root_password_sha2'] = '...'
+  node['graylog']['server']['server.conf']['root_password_sha2'] = '...'
 
   # This also should be a random string, generated e.g. with "pwgen 96"
-  node['graylog']['web_interface']['graylog2-web-interface.conf']['application.secret'] = 'CHANGE ME!'
+  node['graylog']['web_interface']['web.conf']['application.secret'] = 'CHANGE ME!'
   ```
 
 2. Add default recipe to your run\_list
@@ -46,13 +46,12 @@ Currently tested on Ubuntu-14.04 LTS.
 
 - Chef `>= 0.11`
 - [MongoDB cookbook](https://github.com/hipsnip-cookbooks/mongodb)
-- [Ark cookbook](https://github.com/burtlo/ark)
 - [Apt cookbook](https://github.com/opscode-cookbooks/apt)
 
 
 ## Notes
 
-Please do not expose the Graylog2 service directly in production. Instead, you
+Please do not expose the Graylog service directly in production. Instead, you
 should use a reverse proxy (e.g. [nginx](http://nginx.org)).
 This also adds the capability to use SSL to secure your logins.
 
@@ -62,7 +61,7 @@ Here's an example nginx site configuration you can use:
 ```
 # Upstream to Graylog frontend
 proxy_next_upstream error timeout;
-upstream graylog2_web_interface {
+upstream graylog_web_interface {
     server localhost:9000 fail_timeout=0;
 }
 
@@ -92,7 +91,7 @@ server {
 
         chunked_transfer_encoding off;
 
-        proxy_pass http://graylog2_web_interface;
+        proxy_pass http://graylog_web_interface;
     }
 }
 ```
@@ -100,28 +99,22 @@ server {
 
 ## Attributes
 
-### graylog2 server
-
-Attributes to adjust installation details (defaults should "just work")
+Global attribute:
 
 ```ruby
-# Graylog2 version to install (check http://graylog2.org/download for current version)
-node['graylog']['server']['version'] = '0.20.3'
-
-# User graylog2 runs as (will be created)
-node['graylog']['server']['user'] = 'graylog2'
-
-# URL to graylog2 tar.gz package (Github is the default)
-node['graylog']['server']['url'] = 'https://example.com/graylog.tar.gz'
+# Graylog version to use (must be available via the official repositories)
+node['graylog']['version'] = '1.2'
 ```
 
-Attributes to configure Graylog2.
+### Graylog server
+
+Attributes to configure Graylog.
 The `password_secret` and `root_password_sha2` attributes NEED to be changed!
 
 ```ruby
 # You MUST set a secret to secure/pepper the stored user passwords here. Use at least 64 characters.
 # Generate one by using for example: pwgen -s 96
-node['graylog']['server']['graylog2.conf']['password_secret'] = 'CHANGE ME!'
+node['graylog']['server']['server.conf']['password_secret'] = 'CHANGE ME!'
 
 # the default root user is named 'admin'
 # You MUST specify a hash password for the root user (which you only need to initially set up the
@@ -130,7 +123,7 @@ node['graylog']['server']['graylog2.conf']['password_secret'] = 'CHANGE ME!'
 # Create one by using for example: "echo -n yourpassword | shasum -a 256"
 #
 # For testing purposes (only!) you can use the password "insecure" with the following hash
-node['graylog']['server']['graylog2.conf']['root_password_sha2'] = '1d92dae504a70fbcae6d3721a55d7eacaf94d3133ea5f0394b7d203d64841110'
+node['graylog']['server']['server.conf']['root_password_sha2'] = '1d92dae504a70fbcae6d3721a55d7eacaf94d3133ea5f0394b7d203d64841110'
 ```
 
 This recipe disables multicast to learn about Elasticsearch. This is [recommended for production](http://support.torch.sh/help/kb/graylog2-server/configuring-and-tuning-elasticsearch-for-graylog2-v0200).
@@ -138,50 +131,37 @@ This recipe disables multicast to learn about Elasticsearch. This is [recommende
 ```ruby
 # The default unicast host used and configured by this recipe is automatically retrieved from the Elasticsearch attributes
 # (See below, node['graylog']['elasticsearch']['host'] and node['graylog']['elasticsearch']['port'])
-node['graylog']['server']['graylog2.conf']['elasticsearch_discovery_zen_ping_multicast_enabled'] = false
-node['graylog']['server']['graylog2.conf']['elasticsearch_discovery_zen_ping_unicast_hosts'] = '127.0.0.1:1234'
+node['graylog']['server']['server.conf']['elasticsearch_discovery_zen_ping_multicast_enabled'] = false
+node['graylog']['server']['server.conf']['elasticsearch_discovery_zen_ping_unicast_hosts'] = '127.0.0.1:1234'
 ```
 
-The cookbook accepts every possible configuration option supported by graylog2.conf:
+The cookbook accepts every possible configuration option supported by server.conf
 
 ```ruby
-node['graylog']['server']['graylog2.conf']['key'] = 'value'
+node['graylog']['server']['server.conf']['key'] = 'value'
 ```
 
 
 ### Web-Interface
-
-Attributes to adjust installation details (defaults should "just work")
-
-```ruby
-# Graylog2 web-interface version to install (check http://graylog2.org/download for current version)
-node['graylog']['web_interface']['version'] = '0.20.3'
-
-# User graylog2 runs as (will be created)
-node['graylog']['web_interface']['user'] = 'graylog2'
-
-# URL to graylog2 tar.gz package (Github is the default)
-node['graylog']['web_interface']['url'] = 'https://example.com/webinterface.tar.gz'
-```
 
 Configure application secret. You NEED to change this, otherwise your installation will be insecure!
 
 ```
 # If you deploy your application to several instances be sure to use the same key!
 # Generate for example with: pwgen -s 96
-node['graylog']['web_interface']['graylog2-web-interface.conf']['application.secret'] = 'CHANGE ME!'
+node['graylog']['web_interface']['web.conf']['application.secret'] = 'CHANGE ME!'
 ```
 
 Configure timezone
 
 ```ruby
-node['graylog']['web_interface']['graylog2-web-interface.conf']['timezone'] = 'Europe/Berlin'
+node['graylog']['web_interface']['web.conf']['timezone'] = 'Europe/Berlin'
 ```
 
-The cookbook accepts every possible configuration option supported by graylog2-web-interface.conf:
+The cookbook accepts every possible configuration option supported by web.conf:
 
 ```ruby
-node['graylog']['web_interface']['graylog2-web-interface.conf']['key'] = 'value'
+node['graylog']['web_interface']['web.conf']['key'] = 'value'
 ```
 
 
@@ -224,19 +204,19 @@ node['mongodb']['config']['smallfiles'] = false
 
 ### graylog::default
 
-Installs and configures Elasticsearch, MongoDB, Graylog2 server and The Graylog2 web-interface.
+Installs and configures Elasticsearch, MongoDB, Graylog server and The Graylog web-interface.
 
 ### graylog::elasticsearch
 
-Installs Elasticsearch from the official PPA, and configures it for Graylog2 use.
+Installs Elasticsearch from the official PPA, and configures it for Graylog use.
 
 ### graylog::server
 
-Installs and configures Graylog2 server.
+Installs and configures Graylog server.
 
-### graylog::web\_interface
+### graylog::web
 
-Installs and configures Graylog2 web-interface.
+Installs and configures Graylog web-interface.
 
 
 ## Contributing

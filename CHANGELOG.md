@@ -1,5 +1,10 @@
 Changelog for Graylog cookbook
 
+1.2.1
+-----
+
+- Use Elasticsearch `1.7` by default
+
 1.2.0
 -----
 

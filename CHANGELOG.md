@@ -1,5 +1,12 @@
 Changelog for Graylog cookbook
 
+1.3.1
+-----
+
+- Change default spooling dir to `/var/lib/graylog-server`, according to package default
+- Update other default settings to match Graylog defaults
+
+
 1.3.0
 -----
 

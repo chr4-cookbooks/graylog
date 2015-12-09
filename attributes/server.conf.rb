@@ -200,6 +200,12 @@ default['graylog']['server']['server.conf']['output_batch_size'] = 25
 # for this time period is less than output_batch_size * outputbuffer_processors.
 default['graylog']['server']['server.conf']['output_flush_interval'] = 1
 
+# As stream outputs are loaded only on demand, an output which is failing to initialize will be tried over and
+# over again. To prevent this, the following configuration options define after how many faults an output will
+# not be tried again for an also configurable amount of seconds.
+default['graylog']['server']['server.conf']['output_fault_count_threshold'] = 5
+default['graylog']['server']['server.conf']['output_fault_penalty_seconds'] = 30
+
 # The number of parallel running processors.
 # Raise this number if your buffers are filling up.
 default['graylog']['server']['server.conf']['processbuffer_processors'] = 5
@@ -236,10 +242,9 @@ default['graylog']['server']['server.conf']['inputbuffer_wait_strategy'] = 'bloc
 # Enable the disk based message journal.
 default['graylog']['server']['server.conf']['message_journal_enabled'] = true
 
-# The directory which will be used to store the message journal. The directory must me exclusively
-# used by Graylog and
+# The directory which will be used to store the message journal. The directory must me exclusively used by Graylog and
 # must not contain any other files than the ones created by Graylog itself.
-default['graylog']['server']['server.conf']['message_journal_dir'] = '/var/spool/graylog/journal'
+default['graylog']['server']['server.conf']['message_journal_dir'] = '/var/lib/graylog-server/journal'
 
 # Journal hold messages before they could be written to Elasticsearch.
 # For a maximum of 12 hours or 5 GB whichever happens first.
@@ -365,40 +370,27 @@ default['graylog']['server']['server.conf']['gc_warning_threshold'] = '1s'
 # Connection timeout for a configured LDAP server (e. g. ActiveDirectory) in milliseconds.
 default['graylog']['server']['server.conf']['ldap_connection_timeout'] = nil
 
-# https://github.com/bazhenov/groovy-shell-server
-default['graylog']['server']['server.conf']['groovy_shell_enable'] = false
-default['graylog']['server']['server.conf']['groovy_shell_port'] = 6789
-
 # Enable collection of Graylog-related metrics into MongoDB
 default['graylog']['server']['server.conf']['enable_metrics_collection'] = false
 
 # Disable the use of SIGAR for collecting system stats
 default['graylog']['server']['server.conf']['disable_sigar'] = false
 
-# TELEMETRY
-# Enable publishing Telemetry data
-default['graylog']['server']['server.conf']['telemetry_enabled'] = false
+# Amount of time of inactivity after which collectors are flagged as inactive (Default: 1 minute)
+default['graylog']['server']['server.conf']['collector_inactive_threshold'] = '1m'
 
-# Base URL of the Telemetry service
-default['graylog']['server']['server.conf']['telemetry_url'] = 'https://telemetry-in.graylog.com/submit/'
+# Amount of time after which inactive collectors are purged (Default: 14 days)
+default['graylog']['server']['server.conf']['collector_expiration_threshold'] = '14d'
 
-# Authentication token for the Telemetry service
-default['graylog']['server']['server.conf']['telemetry_token'] = nil
+# The default cache time for dashboard widgets. (Default: 10 seconds, minimum: 1 second)
+default['graylog']['server']['server.conf']['dashboard_widget_default_cache_time'] = '10s'
 
-# How often the Telemetry data should be reported
-default['graylog']['server']['server.conf']['telemetry_report_interval'] = '1m'
+# Automatically load content packs in "content_packs_dir" on the first start of Graylog.
+default['graylog']['server']['server.conf']['content_packs_loader_enabled'] = true
 
-# Number of Telemetry data sets to store locally if the connection to the Telemetry service fails
-default['graylog']['server']['server.conf']['telemetry_max_queue_size'] = 10
+# The directory which contains content packs which should be loaded on the first start of Graylog.
+default['graylog']['server']['server.conf']['content_packs_dir'] = '/usr/share/graylog-server/contentpacks'
 
-# TTL for Telemetry data in local cache
-default['graylog']['server']['server.conf']['telemetry_cache_timeout'] = '1m'
-
-# Connect timeout for HTTP connections
-default['graylog']['server']['server.conf']['telemetry_service_connect_timeout'] =  '1s'
-
-# Write timeout for HTTP connections
-default['graylog']['server']['server.conf']['telemetry_service_write_timeout'] = '5s'
-
-# Read timeout for HTTP connections
-default['graylog']['server']['server.conf']['telemetry_service_read_timeout'] = '5s'
+# A comma-separated list of content packs (files in "content_packs_dir") which should be applied on
+# the first start of Graylog.
+default['graylog']['server']['server.conf']['content_packs_auto_load'] = 'grok-patterns.json'

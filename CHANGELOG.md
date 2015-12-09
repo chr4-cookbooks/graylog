@@ -1,5 +1,10 @@
 Changelog for Graylog cookbook
 
+1.3.0
+-----
+
+- Update default Graylog version to `1.3.0`
+
 1.2.1
 -----
 

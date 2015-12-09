@@ -103,7 +103,7 @@ Global attribute:
 
 ```ruby
 # Graylog version to use (must be available via the official repositories)
-node['graylog']['version'] = '1.2'
+node['graylog']['version'] = '1.3'
 ```
 
 ### Graylog server

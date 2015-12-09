@@ -18,4 +18,4 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-default['graylog']['version'] = '1.2'
+default['graylog']['version'] = '1.3'

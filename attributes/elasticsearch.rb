@@ -18,8 +18,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-# Graylog 1.2.2 supports Elasticsearch 1.7, according to
-# http://docs.graylog.org/en/1.2/pages/installation/operating_system_packages.html
+# Graylog 1.3 supports Elasticsearch 1.7, according to
+# http://docs.graylog.org/en/1.3/pages/installation/operating_system_packages.html
 default['graylog']['elasticsearch']['version'] = '1.7'
 
 # Assign half of the systems memory to elasticsearch heap (recommended setting)

@@ -18,6 +18,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+include_recipe 'graylog::apt_repository'
+
 # Check whether application secret is set
 unless node['graylog']['web_interface']['web.conf']['application.secret']
   fail <<-EOS

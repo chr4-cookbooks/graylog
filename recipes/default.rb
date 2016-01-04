@@ -18,7 +18,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-include_recipe 'graylog::apt_repository'
 include_recipe 'graylog::elasticsearch'
 include_recipe 'mongodb::default'
 include_recipe 'graylog::server'

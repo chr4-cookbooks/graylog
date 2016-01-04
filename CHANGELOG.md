@@ -1,5 +1,11 @@
 Changelog for Graylog cookbook
 
+1.3.2
+-----
+
+- Include `apt_repository` recipe for easier handling in `server` and `web recipes`
+
+
 1.3.1
 -----
 

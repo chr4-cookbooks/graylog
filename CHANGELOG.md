@@ -1,5 +1,10 @@
 Changelog for Graylog cookbook
 
+1.3.3
+-----
+
+- Add support for `graylog2.gzip-filter` and `graylog2.client.accept-any-certificate` web interface attributes
+
 1.3.2
 -----
 

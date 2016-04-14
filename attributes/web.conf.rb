@@ -35,3 +35,12 @@ default['graylog']['web_interface']['web.conf']['graylog2.client.accept-any-cert
 
 # You usually do not want to change this.
 default['graylog']['web_interface']['web.conf']['application.global'] = 'lib.Global'
+
+# Enable gzip filter for compressing responses.
+# See https://www.playframework.com/documentation/2.3.x/GzipEncoding for details.
+# Default: false
+default['graylog']['web_interface']['web.conf']['graylog2.gzip-filter'] = nil
+
+# Accept any server certificate without checking for validity; required if using self-signed certificates.
+# Default: true
+default['graylog']['web_interface']['web.conf']['graylog2.client.accept-any-certificate'] = nil

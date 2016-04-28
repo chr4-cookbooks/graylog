@@ -156,6 +156,7 @@ default['graylog']['server']['server.conf']['allow_highlighting'] = false
 # all these
 # this must be the same as for your elasticsearch cluster
 default['graylog']['server']['server.conf']['elasticsearch_cluster_name'] = node['graylog']['elasticsearch']['cluster_name']
+default['graylog']['server']['server.conf']['elasticsearch_node_name'] = "#{node['graylog']['elasticsearch']['cluster_name']}-server"
 
 # The prefix being used to generate the Elasticsearch node name which makes it easier to identify the specific Graylog
 # server running the embedded Elasticsearch instance. The node name will be constructed by concatenating this prefix

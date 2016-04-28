@@ -8,17 +8,11 @@
 # Elasticsearch configuration directory
 #CONF_DIR=/etc/elasticsearch
 
-# Elasticsearch configuration file
-#CONF_FILE=$CONF_DIR/elasticsearch.yml
-
 # Elasticsearch data directory
 #DATA_DIR=/var/lib/elasticsearch
 
 # Elasticsearch logs directory
 #LOG_DIR=/var/log/elasticsearch
-
-# Elasticsearch work directory
-#WORK_DIR=/tmp/elasticsearch
 
 # Elasticsearch PID directory
 #PID_DIR=/var/run/elasticsearch
@@ -55,6 +49,9 @@ ES_HEAP_SIZE=<%= @heap_size %>
 # For systemd service, the user is usually configured in file /usr/lib/systemd/system/elasticsearch.service
 #ES_USER=elasticsearch
 #ES_GROUP=elasticsearch
+
+# The number of seconds to wait before checking if Elasticsearch started successfully as a daemon process
+ES_STARTUP_SLEEP_TIME=5
 
 ################################
 # System properties

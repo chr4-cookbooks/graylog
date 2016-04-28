@@ -18,9 +18,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-# Graylog 1.3 supports Elasticsearch 1.7, according to
-# http://docs.graylog.org/en/1.3/pages/installation/operating_system_packages.html
-default['graylog']['elasticsearch']['version'] = '1.7'
+# Graylog 2.0 requires Elasticsearch 2.1 or later
+default['graylog']['elasticsearch']['version'] = '2.x'
 
 # Assign half of the systems memory to elasticsearch heap (recommended setting)
 # See: http://support.torch.sh/help/kb/graylog2-server/configuring-and-tuning-elasticsearch-for-graylog2-v0200

@@ -22,7 +22,7 @@ package 'lsb-release'
 
 apt_repository 'graylog' do
   uri 'https://packages.graylog2.org/repo/debian'
-  distribution node['lsb']['codename']
+  distribution 'stable'
   components Array(node['graylog']['version'])
   key 'https://packages.graylog2.org/repo/debian/keyring.gpg'
 end

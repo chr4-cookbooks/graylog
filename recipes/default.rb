@@ -21,4 +21,3 @@
 include_recipe 'graylog::elasticsearch'
 include_recipe 'mongodb::default'
 include_recipe 'graylog::server'
-include_recipe 'graylog::web'

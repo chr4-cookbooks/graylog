@@ -22,9 +22,6 @@ To quickly setup a working Graylog installation on a single node, do the followi
 
   # Generate with "echo -n yourpassword | shasum -a 256"
   node['graylog']['server']['server.conf']['root_password_sha2'] = '...'
-
-  # This also should be a random string, generated e.g. with "pwgen 96"
-  node['graylog']['web_interface']['web.conf']['application.secret'] = 'CHANGE ME!'
   ```
 
 2. Add default recipe to your run\_list
@@ -61,7 +58,7 @@ Here's an example nginx site configuration you can use:
 ```
 # Upstream to Graylog frontend
 proxy_next_upstream error timeout;
-upstream graylog_web_interface {
+upstream graylog {
     server localhost:9000 fail_timeout=0;
 }
 
@@ -91,7 +88,7 @@ server {
 
         chunked_transfer_encoding off;
 
-        proxy_pass http://graylog_web_interface;
+        proxy_pass http://graylog;
     }
 }
 ```
@@ -139,29 +136,6 @@ The cookbook accepts every possible configuration option supported by server.con
 
 ```ruby
 node['graylog']['server']['server.conf']['key'] = 'value'
-```
-
-
-### Web-Interface
-
-Configure application secret. You NEED to change this, otherwise your installation will be insecure!
-
-```
-# If you deploy your application to several instances be sure to use the same key!
-# Generate for example with: pwgen -s 96
-node['graylog']['web_interface']['web.conf']['application.secret'] = 'CHANGE ME!'
-```
-
-Configure timezone
-
-```ruby
-node['graylog']['web_interface']['web.conf']['timezone'] = 'Europe/Berlin'
-```
-
-The cookbook accepts every possible configuration option supported by web.conf:
-
-```ruby
-node['graylog']['web_interface']['web.conf']['key'] = 'value'
 ```
 
 
@@ -213,10 +187,6 @@ Installs Elasticsearch from the official PPA, and configures it for Graylog use.
 ### graylog::server
 
 Installs and configures Graylog server.
-
-### graylog::web
-
-Installs and configures Graylog web-interface.
 
 
 ## Contributing

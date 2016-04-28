@@ -56,5 +56,5 @@ service 'graylog-server' do
   supports restart: true
   action [:enable, :start]
 
-  subscribes :restart, 'template[/etc/server.conf]'
+  subscribes :restart, 'template[/etc/graylog/server/server.conf]'
 end

@@ -1,6 +1,6 @@
-# graylog cookbook
+# Graylog cookbook
 
-This cookbook sets up [Graylog](http://graylog.org), version `>= 0.20.x` (not the old rails graylog).
+This cookbook sets up [Graylog](http://graylog.org).
 
 Including the following support services:
 

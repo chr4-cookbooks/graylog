@@ -26,7 +26,6 @@ apt_repository 'elasticsearch' do
   key 'http://packages.elasticsearch.org/GPG-KEY-elasticsearch'
 end
 
-package 'openjdk-7-jre'
 package 'elasticsearch' do
   # Make sure elasticsearch is in the newest version.
   action :upgrade

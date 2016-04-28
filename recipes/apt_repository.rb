@@ -18,8 +18,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-package 'lsb-release'
-
 apt_repository 'graylog' do
   uri 'https://packages.graylog2.org/repo/debian'
   distribution 'stable'

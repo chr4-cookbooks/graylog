@@ -18,7 +18,16 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-include_recipe 'graylog::java'
-include_recipe 'graylog::elasticsearch'
-include_recipe 'mongodb::default'
-include_recipe 'graylog::server'
+package 'lsb-release'
+
+# Graylog 2.0 requires Java 8
+apt_repository 'openjdk-8' do
+  uri 'http://ppa.launchpad.net/openjdk-r/ppa/ubuntu'
+  distribution node['lsb']['codename']
+  components %w(main)
+  key '86F44E2A'
+  keyserver 'keyserver.ubuntu.com'
+  only_if { node['lsb']['codename'] == 'trusty' }
+end
+
+package 'openjdk-8-jdk'

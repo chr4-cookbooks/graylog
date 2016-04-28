@@ -1,5 +1,15 @@
 Changelog for Graylog cookbook
 
+2.0.0
+-----
+
+- Upgrade default Elasticsearch version to 2.3
+- Upgrade default Graylog version to 2.0
+- Fix issue that graylog-server was not restarted automatically upon config changes
+- New default name `graylog` instead of `graylog2` was not adapted to make migration easier
+- Upgrade Java version to openjdk-8, install `openjdk-r` PPA on trusty
+- Adapt nginx example in README
+
 1.3.3
 -----
 

@@ -52,14 +52,22 @@ Please do not expose the Graylog service directly in production. Instead, you
 should use a reverse proxy (e.g. [nginx](http://nginx.org)).
 This also adds the capability to use SSL to secure your logins.
 
-You can easily setup nginx using the [official nginx cookbook](https://github.com/opscode-cookbooks/nginx).
-Here's an example nginx site configuration you can use:
+Here's an example nginx site configuration you can use:j
+Note: The configuration assumes you set the `rest_listen_url` accordingly:
+
+```ruby
+default['graylog']['server']['server.conf']['web_endpoint_uri'] = 'https://graylog.example.com/api/'
+```
 
 ```
 # Upstream to Graylog frontend
 proxy_next_upstream error timeout;
-upstream graylog {
-    server localhost:9000 fail_timeout=0;
+upstream graylog_web_interface {
+    server 127.0.0.1:9000 fail_timeout=0;
+}
+
+upstream graylog_rest_api {
+    server 127.0.0.1:12900 fail_timeout=0;
 }
 
 # Redirect everything to https
@@ -76,19 +84,24 @@ server {
     ssl_certificate /etc/nginx/certs/graylog.example.com.crt;
     ssl_certificate_key /etc/nginx/certs/graylog.example.com.key;
 
+    root /usr/share/nginx/html;
+
+    proxy_pass_header Date;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $http_host:$server_port;
+    proxy_redirect off;
+    proxy_set_header X_FORWARDED_PROTO $scheme;
+
+    chunked_transfer_encoding off;
+
     location / {
-        root /usr/share/nginx/html;
+        proxy_pass http://graylog_web_interface;
+    }
 
-        proxy_pass_header Date;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header Host $http_host:$server_port;
-        proxy_redirect off;
-        proxy_set_header X_FORWARDED_PROTO $scheme;
-
-        chunked_transfer_encoding off;
-
-        proxy_pass http://graylog;
+    location /api {
+        rewrite ^/api(.*)$ $1 break;
+        proxy_pass http://graylog_rest_api;
     }
 }
 ```

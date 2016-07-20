@@ -52,7 +52,7 @@ Please do not expose the Graylog service directly in production. Instead, you
 should use a reverse proxy (e.g. [nginx](http://nginx.org)).
 This also adds the capability to use SSL to secure your logins.
 
-Here's an example nginx site configuration you can use:j
+Here's an example nginx site configuration you can use:
 Note: The configuration assumes you set the `rest_listen_url` accordingly:
 
 ```ruby
